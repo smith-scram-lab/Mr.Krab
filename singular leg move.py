@@ -164,8 +164,8 @@ def moveLeg(leg):
 
 def main() -> None:
     # instances of the servos
-    servoList = [[Servo(DXL_ID1), Servo(DXL_ID2), Servo(DXL_ID3)],
-                [Servo(DXL_ID4), Servo(DXL_ID5), Servo(DXL_ID6)]]
+    servoList = [[Servo(DXL_ID16), Servo(DXL_ID17), Servo(DXL_ID18)]]
+                #  [Servo(DXL_ID10), Servo(DXL_ID11), Servo(DXL_ID12)]]
                 #  Servo(DXL_ID4), Servo(DXL_ID5), Servo(DXL_ID6), 
                 #  Servo(DXL_ID7), Servo(DXL_ID8), Servo(DXL_ID9), 
                 #  Servo(DXL_ID10), Servo(DXL_ID11), Servo(DXL_ID12), 
@@ -180,26 +180,15 @@ def main() -> None:
     # Set the speed of the servos, user set :D
     for leg in servoList:
         for servo in leg:
-            # speed = input("Enter speed for servo ID #" + str(servo.id) + ": ")
-            # while not speed.isnumeric():
-            #     speed = input("Enter a positive integer: ")
-            # servo.set_speed(int(speed))
             servo.set_speed(100)
 
     # Write goal position
-    # for servo in range(int(len(servoList) / 3)):
-    #     # goal = input("Enter goal position for servo ID #" + str(servo.id) + ": ")
-    #     # while not goal.isnumeric():
-    #     #     goal = input("Enter a positive integer: ")
-    #     # servo.set_goal_position(int(goal))
-    #     servoList[servo].set_goal_position(500)
     for leg in servoList:
         moveLeg(leg)
         # get the goal positions after overriding
         goal_positions_dict = {}
         for servo in leg:
             goal_positions_dict[str(servo.id)] = servo.get_goal_position()
-        print(goal_positions_dict)
 
         move = True
         while move:
@@ -208,7 +197,6 @@ def main() -> None:
             for servo in leg:
                 servo_pos_dict[str(servo.id)] = servo.get_current_position()
 
-            print(servo_pos_dict)
             move_verdict = []
 
             # check goal positions against current positions; both dictionaries share keys
@@ -226,12 +214,14 @@ def main() -> None:
                 move = True
 
     # Disable Dynamixel Torque
-    for servo in servoList:
-        servo.set_torque_value(TORQUE_DISABLE)
+    for leg in servoList:
+        for servo in leg:
+            servo.set_torque_value(TORQUE_DISABLE)
 
     # print current positions
-    for servo in servoList:
-        servo.get_current_position()
+    for leg in servoList:
+        for servo in leg:
+            servo.get_current_position()
 
     # Close port
     portHandler.closePort()

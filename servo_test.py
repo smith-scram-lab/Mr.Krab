@@ -1,5 +1,6 @@
 import os
 from dynamixel_sdk import *
+from time import sleep
 
 # ngl I don't see the point of this.
 if os.name == 'nt':
@@ -96,9 +97,9 @@ class Servo:
         # enable_val = 1 (torque is enabled); enable_val = 0 (torque is disabled, is default of each AX-12A servo)
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, self.id, ADDR_MX_TORQUE_ENABLE, enable_val)
         if dxl_comm_result != COMM_SUCCESS: # incorrect status packet
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getRxPacketError(dxl_error))
         else:
             if enable_val == 1:
                 print("Servo ID #" + str(self.id) + " torque enabled")
@@ -110,9 +111,9 @@ class Servo:
     def set_speed(self, speed: int) -> bool:
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, self.id, ADDR_MX_MOVE_SPEED, speed)
         if dxl_comm_result != COMM_SUCCESS: # incorrect status packet
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getRxPacketError(dxl_error))
         else:
             print("Servo ID #" + str(self.id) + " speed set to " + str(speed))
             return True
@@ -121,9 +122,9 @@ class Servo:
     def set_goal_position(self, position: int) -> bool:
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, self.id, ADDR_MX_GOAL_POSITION, position)
         if dxl_comm_result != COMM_SUCCESS: # incorrect status packet
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getRxPacketError(dxl_error))
         else:
             print("Servo ID #" + str(self.id) + " goal set to " + str(position))
             return True
@@ -132,9 +133,9 @@ class Servo:
     def get_goal_position(self) -> int | bool:
         dxl_goal_position, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, self.id, ADDR_MX_GOAL_POSITION)
         if dxl_comm_result != COMM_SUCCESS: # incorrect status packet
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getRxPacketError(dxl_error))
         else:
             print("Servo ID #" + str(self.id) + " goal position:", dxl_goal_position)
             return dxl_goal_position
@@ -143,9 +144,9 @@ class Servo:
     def get_current_position(self) -> int | bool:
         dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, self.id, ADDR_MX_PRESENT_POSITION)
         if dxl_comm_result != COMM_SUCCESS: # incorrect status packet
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
+            print("Servo ID #" + str(self.id) + " %s" % packetHandler.getRxPacketError(dxl_error))
         else:
             print("Servo ID #" + str(self.id) + " current position:", dxl_present_position)
             return dxl_present_position
@@ -153,7 +154,8 @@ class Servo:
 
 def main() -> None:
     # instances of the servos
-    servoList = [Servo(DXL_ID16), Servo(DXL_ID17), Servo(DXL_ID18)]
+    servoList = [Servo(DXL_ID16), Servo(DXL_ID17), Servo(DXL_ID18),
+                 Servo(DXL_ID10), Servo(DXL_ID11)]
     # Servo(DXL_ID1), Servo(DXL_ID2), Servo(DXL_ID3), 
     # Servo(DXL_ID4), Servo(DXL_ID5), Servo(DXL_ID6), 
     # Servo(DXL_ID7), Servo(DXL_ID8), Servo(DXL_ID9), 
@@ -163,31 +165,39 @@ def main() -> None:
 
     # Enable Dynamixel Torque
     for servo in servoList:
-        servo.set_torque_value(TORQUE_ENABLE)
+        is_set_torque = servo.set_torque_value(TORQUE_ENABLE)
+        while not is_set_torque:
+            is_set_torque = servo.set_torque_value(TORQUE_ENABLE)
 
-    # Set the speed of the servos, user set :D
+    # Set the speed of the servos
     for servo in servoList:
-        # speed = input("Enter speed for servo ID #" + str(servo.id) + ": ")
-        # while not speed.isnumeric():
-        #     speed = input("Enter a positive integer: ")
-        # servo.set_speed(int(speed))
-        servo.set_speed(100)
+        is_set_speed = servo.set_speed(100)
+        while not is_set_speed:
+            is_set_speed = servo.set_speed(100)
 
     # Write goal position
     for servo in servoList:
-        servo.set_goal_position(500)
+        is_set_goal = servo.set_goal_position(500)
+        while not is_set_goal:
+            is_set_goal = servo.set_goal_position(500)
 
     # get the goal positions after overriding
     goal_positions_dict = {}
     for servo in servoList:
-        goal_positions_dict[str(servo.id)] = servo.get_goal_position()
+        get_goal = servo.get_goal_position()
+        while get_goal == False:
+            get_goal = servo.get_goal_position()
+        goal_positions_dict[str(servo.id)] = get_goal
 
     move = True
     while move:
         # get the current positions, insert into dictionary using servo id as key
         servo_pos_dict = {}
         for servo in servoList:
-            servo_pos_dict[str(servo.id)] = servo.get_current_position()
+            get_current = servo.get_current_position()
+            while get_current == False:
+                get_current = servo.get_current_position()
+            servo_pos_dict[str(servo.id)] = get_current
 
         move_verdict = []
 
@@ -199,19 +209,30 @@ def main() -> None:
             else:
                 move_verdict.append(False)
 
+        print(goal_positions_dict, servo_pos_dict)
+        
         # if each servo is within the threshold for reaching the goal, the program can stop having it try moving
         if all(ele == True for ele in move_verdict):
             move = False
         else:
             move = True
+            for servo in range(len(servoList)):
+                if move_verdict[servo] == False:
+                    is_set_goal = servoList[servo].set_goal_position(500)
+                    while not is_set_goal:
+                        is_set_goal = servoList[servo].set_goal_position(500)
 
     # Disable Dynamixel Torque
     for servo in servoList:
-        servo.set_torque_value(TORQUE_DISABLE)
+        is_set_torque = servo.set_torque_value(TORQUE_DISABLE)
+        while not is_set_torque:
+            is_set_torque = servo.set_torque_value(TORQUE_DISABLE)
 
     # print current positions
     for servo in servoList:
-        servo.get_current_position()
+        get_current = servo.get_current_position()
+        while get_current == False:
+            get_current = servo.get_current_position()
 
     # Close port
     portHandler.closePort()
