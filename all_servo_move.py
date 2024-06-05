@@ -63,7 +63,7 @@ DXL_ID17 = 15
 DXL_ID18 = 17
 
 BAUDRATE = 1000000 # Must be 1000000 to work with the AX series.
-DEVICENAME = 'COM11' # Port used to connect, depends on OS (windows ex: COM1, Mac ex: /dev/tty.usbserial-*, Linux ex: /dev/ttyUSB0)
+DEVICENAME = 'COM3' # Port used to connect, depends on OS (windows ex: COM1, Mac ex: /dev/tty.usbserial-*, Linux ex: /dev/ttyUSB0)
 
 TORQUE_ENABLE = 1 # Value for enabling the torque
 TORQUE_DISABLE = 0 # Value for disabling the torque
