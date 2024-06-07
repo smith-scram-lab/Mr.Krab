@@ -1,5 +1,7 @@
 # A Step-by-Step Guide to getting started with helping Mr. Krabs walk, Python edition
 
+The below process in its entirety only needs to be completed once in order for your computer to communicate with Mr. Krabs. After it has neem done once, all that needs to be done is to plug in the U2D2 and turn on the power supply before running the code.
+
 ## Getting Dynamixel SDK on your computer
 
 1. Clone the [Dynamixel SDK](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/download/#repository) and put it in a place easy to access.
@@ -23,6 +25,11 @@
 ![Port Select](imgs/wiz1_port.png)
 
 <p style="text-align: center;"> <em> Port Selection </em> </p>
+
+   If "No Port" appears in dropdown menu:
+   - Windows:
+       - Open device manager. Select Ports Item. If Ports Item not appearing, open the View menu, select "show hidden devices, and port should appear. Double click to open any ports that appear in order to ensure the device has been configured.
+       - With Port now appearing in device manager, the port should now be able to be selected in Dynamixel Wizard.  
 
 4. Using the 3-Pin Power hub, hook up each leg to it via daisy chain so that each leg is 3 servos chained and then it's connected back to the hub.
 
