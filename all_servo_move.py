@@ -264,12 +264,18 @@ def move(servoList) -> None:
                     
 def main() -> None:
     # Instances of the servos
-    servoList = [Servo(DXL_ID1), Servo(DXL_ID2), Servo(DXL_ID3),
-                 Servo(DXL_ID4), Servo(DXL_ID5), Servo(DXL_ID6), 
-                 Servo(DXL_ID7), Servo(DXL_ID8), Servo(DXL_ID9), 
-                 Servo(DXL_ID10), Servo(DXL_ID11), Servo(DXL_ID12),
-                 Servo(DXL_ID13), Servo(DXL_ID14), Servo(DXL_ID15),
-                 Servo(DXL_ID16), Servo(DXL_ID17), Servo(DXL_ID18)]
+    servoList = [Servo(DXL_ID1), Servo(DXL_ID2), Servo(DXL_ID3), # Leg 1
+                 Servo(DXL_ID4), Servo(DXL_ID5), Servo(DXL_ID6), # Leg 2
+                 Servo(DXL_ID7), Servo(DXL_ID8), Servo(DXL_ID9), # Leg 3
+                 Servo(DXL_ID10), Servo(DXL_ID11), Servo(DXL_ID12), # Leg 4
+                 Servo(DXL_ID13), Servo(DXL_ID14), Servo(DXL_ID15), # Leg 5
+                 Servo(DXL_ID16), Servo(DXL_ID17), Servo(DXL_ID18)] # Leg 6
+
+    # servoListBase = [Servo(DXL_ID1), Servo(DXL_ID4),Servo(DXL_ID10), Servo(DXL_ID13), Servo(DXL_ID16),  Servo(DXL_ID7)]
+    # servoListMiddle = [Servo(DXL_ID2), Servo(DXL_ID5), Servo(DXL_ID8), Servo(DXL_ID11),  Servo(DXL_ID14), Servo(DXL_ID17)]
+    # servoListEnd = [Servo(DXL_ID3), Servo(DXL_ID6), Servo(DXL_ID9), Servo(DXL_ID12), Servo(DXL_ID15), Servo(DXL_ID18)]
+
+    # servoList = servoListMiddle + servoListEnd + servoListBase
 
     # Enable Dynamixel Torque
     for servo in servoList:
@@ -303,3 +309,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+    
