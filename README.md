@@ -18,7 +18,7 @@ The below process in its entirety only needs to be completed once in order for y
 
 ## Getting RoboPlus for Dynamixel Wizard
 
-NOTE: This section is not necessary for Raspberry Pi. RoboPlus does not need to be installed for Dynamixel and U2D2 on Raspberry Pi.
+NOTE: This RoboPlus setup instructions are not necessary for Raspberry Pi. RoboPlus does not need to be installed for Dynamixel and U2D2 on Raspberry Pi. However, you still must follow steps 4 and 5 of this section when using Raspberry Pi to ensure that the servos are set up correctly and that power is configured correctly.
 
 1. Going [here](https://en.robotis.com/service/downloadpage.php?ca_id=10), download **RoboPlus** located close to the bottom of the page (if you don't use a Windows machine, you can use [DYNAMIXEL Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/). See below for more instructions for this software).
 
